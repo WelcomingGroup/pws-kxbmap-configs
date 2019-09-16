@@ -1,22 +1,22 @@
 language: scala
 scala:
-  - 2.12.10
-  - 2.13.0
+- 2.12.10
+- 2.13.0
 branches:
   only:
-    - master
+  - master
 before_install:
-  - unset SBT_OPTS JVM_OPTS
-  - "./scripts/travis_prepare.sh $artifactory_user $artifactory_password"
+- unset SBT_OPTS JVM_OPTS
+- "./scripts/travis_prepare.sh $artifactory_user $artifactory_password"
 script:
-  - travis_wait sbt ++$TRAVIS_SCALA_VERSION -Dsbt.log.noformat=true clean update test
+- travis_wait sbt ++$TRAVIS_SCALA_VERSION -Dsbt.log.noformat=true clean update test
 deploy:
-  - provider: script
-    script: sbt ++$TRAVIS_SCALA_VERSION -Dsbt.log.noformat=true publish
-    skip_cleanup: true
-    on:
-      branch: master
+- provider: script
+  script: sbt ++$TRAVIS_SCALA_VERSION -Dsbt.log.noformat=true publish
+  skip_cleanup: true
+  on:
+    branch: master
 env:
   global:
-    - secure: AAdV+1xhS2CaXffvUWuQPgTqQHBY9VDSog9lpm66Ng0rJT6vM1ziYMjxewVcRsM42BHk2rtzXdGvafPt2WynhTFEIFeKZzAaCtyvBqJpTSBpLr5jHdnZnUEnSDtu5/pZyYJSZGZGVua61aTSOf2D33IKTzdxeTyaCgZSMiXct+m0LCF3BTTomXZGjYbwlamDe5OosjrVYNBPnHpgzFS6Tx2EizXWvZ3zB1/jOOZ94Vij0Sj3rud1J1VzmRR1nhNgooIph18kEBDopGl7OYFBjs7dOltDK4eprU9kvFvhziYEK6I+9Q8tIXxuwnfJkquJo5onG6j2M5ZTdouX9sObWh7/YR6VgCAPIy/G5KPRWjS0ImeLkhLSTXJbZyaPzV3LRjPv7DQsQSK2zDlADESPpWjM4irhPxnojVCTig+ZwCp4kGhesaOn6QgNjQnebx9RfLQw0++r847Cc1QKwG2oqfGhi6tICRTLTyErxsZz+Ou3luLpIb2WTaWL8oXCaqJ9uNXuqV0KvbZ5T73W7P33f5aCR6SxBAb6Gsvpd6KXisHuQFVRT4nSC9FK1+BjI6UjX/jeJnD5B6sFHx7xTJl/u/jHOj1eA3kKoY9mLVGSHV9dGF+p4Gsw6IfLrcse79tw/3egOF+CM+4hec2lyId9KK8ddZqMSSAWGsZDJWxHqWM=
-    - secure: bsS3rEIhHbtF6U3kk3m5R2Ms4CQCLZyscWPGdVXfzqv7sZGPye5miQTdy/bMd0+ra4AsUwAFSsgAbhrvtR79J8zkuOTrR0MzLvbo1j4DMeA2GOfvqBsiNrDWhcus7ELKhxWdIiW17bDBLekSpOix8CgvcE1Q7sVvXrCdf67i0+zEnPFoxl/AHYWSIn/cgGWtzLBhKvBPvQJeyfoMcOvZeXxVTGumQ9IOwP6E83i+jRTf0nfP0qibv/+QD5jVmVTAC0lcY+wc5e/s8Mz9x6/EkBa+PxabTfBAiTRfvKhQHEzr3/nOXK7XUyOEfSsBj3JbGYnFSzY3G4STI8db0LOxlq6sLxFYixw/3NJK+Bb5NTTNJnB+mTf1jePOqZJAnIYgZK+NSco9BfJ25C4Utn9+r/Csb9dhvMO6sxK26pg0KWgXt4zYA22F0yFbX+q78OSNearKgbYsc/5BAJoGwaQAtH0ZlwzNnhKj2LK6INWOkOL2ACD2zcAV/Kc9loJwTkLd1gXcHKM+MHFnn5Ro8CRk+O28bD8CN4CLhv32cMMaZs6bZ/HG5ml2YVGTOoFZ0peu2jSBhlAyROWBbrs+w2+dHrtBkM2/T5zf2Jxz/oeFId1R2y1P2YLJwFTW3BgRrzzYqIZ2wW1Oi3wMsiN5G4PcDmhfXhodwN/SKmIabR/cy68=
+  - secure: BriqQHOwV9MKRjd/74ZB9eZZIyvP1VOpk3p09pmN0EzFcJ8iecn3krWGoB+tTUDjSKhQMLUsmCSxSKR4Qj8dlRsapbYZcKZ776KScMbwNrpZo8/ga1/Hc9FXOBb7WTRWEX5tKSDxTmGN4FfNY6O4+6wLImbA9qYf/dm5xGkOXOq6QcZQAZ0FWYeJp5NaRvlDAN7LMfUbeHvIq1W2uzou7qQ/0Cg22P6gSeFogv4Gcul9nhXV+b0+a2dvReGLv6jCQSFPe6qBLZj+Oic8D07D94bB4o5lpspaOJdG8dOJz4BqXrwV8wvrQ8EHluJrxcfd5wSsjWjIagv6hu8nv2kYBkTSS26lnepHiX6J3DEdomPdKScbHAdf8R5ZrNzDVPHFTsjA2ZWMxbETa2O6cHUbZE/cGtwAJGZFZszMCKkMCtM/o9ZOC1OR/KIYoO13kygALPykmNX0uapzDcVazIs//ols8tKYNs64OC3iCFf7yTqI9GOwp8ojauqjl7ifeoExau51535s5mk0JdL7Bxujsp6dxEFFzp7xSRI0C+DIAmlzABsBl3P/UEbx88cIP53UhEPJkhoqmmkpLwvlyIG0VynRH8Wq3rVwDa39TuGR7VKIQGUDaQwVpNL0QT4I1b9p2mGbfIuXz9wTIYm2p3/35/xjPU0AjveyK/JdOZe3a9k=
+  - secure: DEaUWnLqvPJVc6wEilbXmYfsb8Q+turGC49Lji727cXI4nPd50aghvXwweWaoPyoBoSLzzfLsc3rOT2dnXOPEVjeHhnjYtEeynVuNgViVlqS74Au3R/Y/U/CLDQBfl/ip8Y719KehB7UiMRLuqp89B79760Ih2zQe1N/tg7Dd2BgCegqpC7tZSSnsCZr7O1qfnWNDtTAHIwYvrS0V8GyTbA1t8QqI+n8yok9L6PGjI4SgC+hMHuJa+lSeHc2OhJj2jqc4dCWbFskpQ8IeGxhUUl76HFZ66ziA/MPrDUlUWAjNCfeawQ5uxLWhSESdtw4oKVhWY7T+7j5g6sTYM0DkBLbff67XFPko/UlQ4QBfMBQCWmzF2O34+bp7BzvtjkcTJEUhqktcScakVL0gqLs8+5XdmbyoYYeNLapOsr1hdL+s6hCrxrI66z6RIKC3cG6CtYvv0NIIAbObey7OfdbZGqfln8+tc/TlfDqNGxOAzN0u+eMLhQw+L4a8xolm3ln0xevMnF7/MSCzGC1EEo6xgCnjtFE8y7OVkS9ogs6eZU/tephUu4a/6CT+EIs62sczOpQQ4mAAb+Vr0l+1kp49vMyLSCu/oLmU7tgQs4Nci8nJWSzZEa5bUL9XOrSeuNi3RJsz2qme+dmnYpqUSezcSxgDtNa2fsMu0cDY0UNUkU=
