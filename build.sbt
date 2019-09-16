@@ -1,7 +1,5 @@
 name := "configs-root"
 
-enablePlugins(Unpublished)
-
 lazy val core = project
   .settings(
     name := "configs",
@@ -24,14 +22,4 @@ lazy val core = project
         |import configs._
         |import configs.syntax._
         |""".stripMargin
-  )
-
-lazy val docs = project
-  .dependsOn(core % Tut)
-  .enablePlugins(TutPlugin, Unpublished)
-  .settings(
-    tutSourceDirectory := (sourceDirectory in Tut).value / "doc",
-    libraryDependencies ++= Seq(
-      lombok % Tut
-    )
   )
