@@ -1,32 +1,22 @@
-sudo: false
-
 language: scala
-jdk:
-  - openjdk8
-  - openjdk12
 scala:
+  - 2.12.10
   - 2.13.0
-  - 2.12.8
-  - 2.11.12
-
-env:
-  - SBT_TASK=core/test
-  - SBT_TASK=docs/tut
-
-matrix:
-  # https://github.com/scala/bug/issues/11372
-  exclude:
-    - scala: 2.12.8
-      jdk: openjdk12
-
+branches:
+  only:
+    - master
+before_install:
+  - unset SBT_OPTS JVM_OPTS
+  - "./scripts/travis_prepare.sh $artifactory_user $artifactory_password"
 script:
-  - sbt ++$TRAVIS_SCALA_VERSION $SBT_TASK
-
-  # Tricks to avoid unnecessary cache updates
-  - find $HOME/.sbt -name "*.lock" -delete
-  - find $HOME/.ivy2 -name "ivydata-*.properties" -delete
-
-cache:
-  directories:
-    - $HOME/.ivy2/cache
-    - $HOME/.sbt/boot
+  - travis_wait sbt ++$TRAVIS_SCALA_VERSION -Dsbt.log.noformat=true clean update test
+deploy:
+  - provider: script
+    script: sbt ++$TRAVIS_SCALA_VERSION -Dsbt.log.noformat=true publish
+    skip_cleanup: true
+    on:
+      branch: master
+env:
+  global:
+    - secure: AAdV+1xhS2CaXffvUWuQPgTqQHBY9VDSog9lpm66Ng0rJT6vM1ziYMjxewVcRsM42BHk2rtzXdGvafPt2WynhTFEIFeKZzAaCtyvBqJpTSBpLr5jHdnZnUEnSDtu5/pZyYJSZGZGVua61aTSOf2D33IKTzdxeTyaCgZSMiXct+m0LCF3BTTomXZGjYbwlamDe5OosjrVYNBPnHpgzFS6Tx2EizXWvZ3zB1/jOOZ94Vij0Sj3rud1J1VzmRR1nhNgooIph18kEBDopGl7OYFBjs7dOltDK4eprU9kvFvhziYEK6I+9Q8tIXxuwnfJkquJo5onG6j2M5ZTdouX9sObWh7/YR6VgCAPIy/G5KPRWjS0ImeLkhLSTXJbZyaPzV3LRjPv7DQsQSK2zDlADESPpWjM4irhPxnojVCTig+ZwCp4kGhesaOn6QgNjQnebx9RfLQw0++r847Cc1QKwG2oqfGhi6tICRTLTyErxsZz+Ou3luLpIb2WTaWL8oXCaqJ9uNXuqV0KvbZ5T73W7P33f5aCR6SxBAb6Gsvpd6KXisHuQFVRT4nSC9FK1+BjI6UjX/jeJnD5B6sFHx7xTJl/u/jHOj1eA3kKoY9mLVGSHV9dGF+p4Gsw6IfLrcse79tw/3egOF+CM+4hec2lyId9KK8ddZqMSSAWGsZDJWxHqWM=
+    - secure: bsS3rEIhHbtF6U3kk3m5R2Ms4CQCLZyscWPGdVXfzqv7sZGPye5miQTdy/bMd0+ra4AsUwAFSsgAbhrvtR79J8zkuOTrR0MzLvbo1j4DMeA2GOfvqBsiNrDWhcus7ELKhxWdIiW17bDBLekSpOix8CgvcE1Q7sVvXrCdf67i0+zEnPFoxl/AHYWSIn/cgGWtzLBhKvBPvQJeyfoMcOvZeXxVTGumQ9IOwP6E83i+jRTf0nfP0qibv/+QD5jVmVTAC0lcY+wc5e/s8Mz9x6/EkBa+PxabTfBAiTRfvKhQHEzr3/nOXK7XUyOEfSsBj3JbGYnFSzY3G4STI8db0LOxlq6sLxFYixw/3NJK+Bb5NTTNJnB+mTf1jePOqZJAnIYgZK+NSco9BfJ25C4Utn9+r/Csb9dhvMO6sxK26pg0KWgXt4zYA22F0yFbX+q78OSNearKgbYsc/5BAJoGwaQAtH0ZlwzNnhKj2LK6INWOkOL2ACD2zcAV/Kc9loJwTkLd1gXcHKM+MHFnn5Ro8CRk+O28bD8CN4CLhv32cMMaZs6bZ/HG5ml2YVGTOoFZ0peu2jSBhlAyROWBbrs+w2+dHrtBkM2/T5zf2Jxz/oeFId1R2y1P2YLJwFTW3BgRrzzYqIZ2wW1Oi3wMsiN5G4PcDmhfXhodwN/SKmIabR/cy68=
